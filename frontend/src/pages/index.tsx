@@ -1,20 +1,41 @@
-import type { NextPage } from "next";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { Box } from "@chakra-ui/react";
+import type { NextPage, NextPageContext } from "next";
+import { getSession, useSession } from "next-auth/react";
+
+import { useColorMode } from "@chakra-ui/color-mode";
+
+import { IconButton } from "@chakra-ui/button";
+import { MoonIcon, SunIcon } from "@chakra-ui/icons";
+import Chat from "../components/Chat/Chat";
+import Auth from "../components/Auth/Auth";
 
 const Home: NextPage = () => {
-  const { data } = useSession();
-  console.log(data);
+  const { data: session } = useSession();
+  const { colorMode, toggleColorMode } = useColorMode();
+
+  const reloadSession = () => {};
   return (
-    <div>
-      {data?.user ? (
-        <button onClick={() => signOut()}>sign out</button>
+    <Box>
+      {session?.user?.username ? (
+        <Chat />
       ) : (
-        <button onClick={() => signIn("google")}>sign in</button>
+        <Auth session={session} reloadSession={reloadSession} />
       )}
 
-      {data?.user?.name}
-    </div>
+      {/* <IconButton mt={4} aria-label="Toggle Mode" onClick={toggleColorMode}>
+        {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+      </IconButton> */}
+    </Box>
   );
 };
+
+export async function getServerSideProps(context: NextPageContext) {
+  const session = await getSession(context);
+  return {
+    props: {
+      session,
+    },
+  };
+}
 
 export default Home;
