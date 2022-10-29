@@ -1,7 +1,10 @@
+import { useMutation } from "@apollo/client";
 import { Button, Center, Image, Input, Stack, Text } from "@chakra-ui/react";
 import { Session } from "next-auth";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
+import UserOperations from "../../graphql/operations/user";
+import { CreateUsernameData, CreateUsernameVariables } from "../../util/types";
 
 interface IAuthProps {
   session: Session | null;
@@ -9,11 +12,19 @@ interface IAuthProps {
 }
 
 const Auth: React.FC<IAuthProps> = ({ session, reloadSession }) => {
-  const [userName, setUserName] = useState("");
+  const [username, setUsername] = useState("");
+
+  const [createUsername, { data, loading, error }] = useMutation<
+    CreateUsernameData,
+    CreateUsernameVariables
+  >(UserOperations.Mutations.createUsername);
+
+  console.log(data, loading, error);
 
   const onSubmit = async () => {
+    if (!username) return;
     try {
-      //create username mutation
+      await createUsername({ variables: { username } });
     } catch (error) {
       console.log(error);
     }
@@ -27,8 +38,8 @@ const Auth: React.FC<IAuthProps> = ({ session, reloadSession }) => {
             <Text fontSize="3xl">Create a Username</Text>
             <Input
               placeholder="Enter a username"
-              value={userName}
-              onChange={(event) => setUserName(event.target.value)}
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
             />
             <Button width="100%" onClick={onSubmit}>
               Save
