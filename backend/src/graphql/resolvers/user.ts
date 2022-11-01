@@ -38,9 +38,9 @@ const resolvers = {
         });
 
         return { success: true };
-      } catch (error) {
+      } catch (error: any) {
         console.log("create username error", error);
-        return { error: "error" + error };
+        return { error: error?.message };
       }
     },
   },
