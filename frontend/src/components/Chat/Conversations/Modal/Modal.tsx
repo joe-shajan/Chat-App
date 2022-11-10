@@ -14,6 +14,7 @@ import {
 import React, { useState } from "react";
 import UserOperations from "../../../../graphql/operations/user";
 import { SearchUsersData, SearchUsersInput } from "../../../../util/types";
+import UserSearchList from "./UserSearchList";
 interface IModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -39,7 +40,7 @@ const ConversationModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent bg="#2d2d2d" pb={4}>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader>Create a Conversation</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <form onSubmit={onSearch}>
@@ -50,11 +51,11 @@ const ConversationModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
                   onChange={({ target: { value } }) => setUsername(value)}
                 />
                 <Button type="submit" disabled={!username} isLoading={loading}>
-                  {" "}
                   Search
                 </Button>
               </Stack>
             </form>
+            {data?.searchUsers && <UserSearchList users={data.searchUsers} />}
           </ModalBody>
         </ModalContent>
       </Modal>
