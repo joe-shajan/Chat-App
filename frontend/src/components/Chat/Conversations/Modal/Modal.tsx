@@ -12,6 +12,7 @@ import {
   Input,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import UserOperations from "../../../../graphql/operations/user";
 import {
   SearchedUser,
@@ -34,12 +35,25 @@ const ConversationModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
     SearchUsersInput
   >(UserOperations.Queries.searchUsers);
 
+  const onCreateConversation = async () => {
+    try {
+      // create conversation mutation
+    } catch (error: any) {
+      console.log("on create conversation error: " + error);
+      toast.error(error?.message);
+    }
+  };
+
   const onSearch = (e: React.FormEvent) => {
     e.preventDefault();
     searchUsers({ variables: { username } });
   };
 
   const addParticipant = (user: SearchedUser) => {
+    //check if user already exists
+    const userExists = participants.find(({ id }) => id === user.id);
+    if (userExists) return;
+
     setParticipants((prev) => [...prev, user]);
     setUsername("");
   };
@@ -75,10 +89,21 @@ const ConversationModal: React.FC<IModalProps> = ({ isOpen, onClose }) => {
               />
             )}
             {participants.length !== 0 ? (
-              <Participants
-                participants={participants}
-                removeParticipant={removeParticipant}
-              />
+              <>
+                <Participants
+                  participants={participants}
+                  removeParticipant={removeParticipant}
+                />
+                <Button
+                  bg="brand.100"
+                  width="100%"
+                  mt={6}
+                  _hover={{ bg: "brand.100" }}
+                  onClick={() => {}}
+                >
+                  Create Conversation
+                </Button>
+              </>
             ) : null}
           </ModalBody>
         </ModalContent>
