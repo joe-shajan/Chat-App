@@ -11,12 +11,10 @@ const resolvers = {
       _: any,
       args: { participantIds: [string] },
       context: GraphQLContext
-    ) => {
+    ): Promise<{ conversationId: string }> => {
       const { session, prisma } = context;
       const { participantIds } = args;
-      console.log(participantIds);
 
-      console.log("inside create conversation");
       if (!session?.user) {
         throw new ApolloError("not authorized");
       }
@@ -39,6 +37,11 @@ const resolvers = {
           },
           include: conversationPopulated,
         });
+
+        //emit a CONVERSATION_CREATED   event using pubsub
+        return {
+          conversationId: conversation.id,
+        };
       } catch (error) {
         console.log("create conversation error", error);
         throw new ApolloError("Error creating conversation");
