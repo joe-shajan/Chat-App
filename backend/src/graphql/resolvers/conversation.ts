@@ -4,7 +4,11 @@ import { Prisma } from "@prisma/client";
 
 const resolvers = {
   //* ---------Queries---------
-  Query: {},
+  Query: {
+    conversations: async (_: any, __: any, context: GraphQLContext) => {
+      console.log("in conversation query");
+    },
+  },
   //* ---------Mutations---------
   Mutation: {
     createConversation: async (
