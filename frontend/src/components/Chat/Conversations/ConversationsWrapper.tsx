@@ -3,6 +3,7 @@ import { Box } from "@chakra-ui/react";
 import { Session } from "next-auth";
 import ConversationList from "./ConversationList";
 import ConversationOperations from "../../../graphql/operations/conversations";
+import { ConversationsData } from "../../../util/types";
 
 interface ConversationsWrapperProps {
   session: Session;
@@ -15,7 +16,9 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
     data: conversationsData,
     error: conversationsError,
     loading: conversationsLoading,
-  } = useQuery(ConversationOperations.Queries.conversations);
+  } = useQuery<ConversationsData, null>(
+    ConversationOperations.Queries.conversations
+  );
   console.log(conversationsData);
 
   return (
