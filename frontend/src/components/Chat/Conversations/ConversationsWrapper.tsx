@@ -19,12 +19,14 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
   } = useQuery<ConversationsData, null>(
     ConversationOperations.Queries.conversations
   );
-  console.log(conversationsData);
 
   return (
     <Box width={{ base: "100%", md: "400px" }} bg="whiteAlpha.50" py={6} px={3}>
       {/* skeleton loader */}
-      <ConversationList session={session} />
+      <ConversationList
+        session={session}
+        conversations={conversationsData?.conversations || []}
+      />
     </Box>
   );
 };
