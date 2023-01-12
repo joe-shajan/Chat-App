@@ -22,7 +22,6 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
   } = useQuery<ConversationsData, null>(
     ConversationOperations.Queries.conversations
   );
-  console.log(conversationsData);
 
   const subscribeToNewConversations = () => {
     subscribeToMore({
@@ -38,7 +37,6 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
         }
       ) => {
         if (!subscriptionData.data) return prev;
-        console.log("subscriptionData" + subscriptionData);
 
         const newConversation = subscriptionData.data.conversationCreated;
         return Object.assign({}, prev, {
