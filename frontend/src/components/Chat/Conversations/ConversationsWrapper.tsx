@@ -3,7 +3,7 @@ import { useQuery } from "@apollo/client";
 import { Box } from "@chakra-ui/react";
 import { Session } from "next-auth";
 import ConversationList from "./ConversationList";
-import ConversationOperations from "../../../graphql/operations/conversations";
+import ConversationOperations from "../../../graphql/operations/conversation";
 import { ConversationsData } from "../../../util/types";
 import { ConversationPopulated } from "../../../../../backend/src/util/types";
 import { useRouter } from "next/router";

@@ -15,7 +15,7 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 
 import UserOperations from "../../../../graphql/operations/user";
-import ConversationOperations from "../../../../graphql/operations/conversations";
+import ConversationOperations from "../../../../graphql/operations/conversation";
 
 import {
   CreateConversationData,
