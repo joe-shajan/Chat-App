@@ -3,9 +3,10 @@ import { useQuery } from "@apollo/client";
 import { Box } from "@chakra-ui/react";
 import { Session } from "next-auth";
 import ConversationList from "./ConversationList";
-import ConversationOperations from "../../../graphql/operations/conversations";
+import ConversationOperations from "../../../graphql/operations/conversation";
 import { ConversationsData } from "../../../util/types";
 import { ConversationPopulated } from "../../../../../backend/src/util/types";
+import { useRouter } from "next/router";
 
 interface ConversationsWrapperProps {
   session: Session;
@@ -22,6 +23,20 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
   } = useQuery<ConversationsData, null>(
     ConversationOperations.Queries.conversations
   );
+
+  const router = useRouter();
+  const {
+    query: { conversationId },
+  } = router;
+
+  const onViewConversation = async (conversationId: string) => {
+    /**
+     * 1. push the conversationid to the router query params
+     * 2. mamrk the conversation as read
+     */
+
+    router.push({ query: { conversationId } });
+  };
 
   const subscribeToNewConversations = () => {
     subscribeToMore({
@@ -54,11 +69,18 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
   }, []);
 
   return (
-    <Box width={{ base: "100%", md: "400px" }} bg="whiteAlpha.50" py={6} px={3}>
+    <Box
+      display={{ base: conversationId ? "none" : "flex", md: "flex" }}
+      width={{ base: "100%", md: "400px" }}
+      bg="whiteAlpha.50"
+      py={6}
+      px={3}
+    >
       {/* skeleton loader */}
       <ConversationList
         session={session}
         conversations={conversationsData?.conversations || []}
+        onViewConversation={onViewConversation}
       />
     </Box>
   );
