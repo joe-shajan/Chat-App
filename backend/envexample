@@ -1,2 +1,2 @@
 MONGODB_URL=
-CLIENT_ORIGIN=http://localhost:3000
+BASE_URL=http://localhost:3000
