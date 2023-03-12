@@ -20,9 +20,7 @@ const ConversationsWrapper: React.FC<ConversationsWrapperProps> = ({
     error: conversationsError,
     loading: conversationsLoading,
     subscribeToMore,
-  } = useQuery<ConversationsData, null>(
-    ConversationOperations.Queries.conversations
-  );
+  } = useQuery<ConversationsData>(ConversationOperations.Queries.conversations);
 
   const router = useRouter();
   const {
