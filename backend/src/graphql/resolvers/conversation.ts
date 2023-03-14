@@ -198,12 +198,18 @@ const resolvers = {
           context: GraphQLContext
         ) => {
           const { session } = context;
+
+          if (!session?.user) {
+            throw new GraphQLError("Not authorized");
+          }
+
           const {
             conversationCreated: { participants },
           } = payload;
 
-          const userIsParticipant = !!participants.find(
-            (p) => p.userId === session?.user?.id
+          const userIsParticipant = userIsConversationParticipant(
+            participants,
+            session.user.id
           );
 
           return userIsParticipant;
