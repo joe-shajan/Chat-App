@@ -20,7 +20,7 @@ const operations = {
       }
     `,
   },
-  Mutations: {
+  Mutation: {
     sendMessage: gql`
       mutation SendMessage(
         $id: String!
